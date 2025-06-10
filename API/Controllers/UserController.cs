@@ -1,0 +1,64 @@
+﻿using API.Data.Services;
+using API.Dtos;
+using API.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _userService.GetAllAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var user = await _userService.GetByIdAsync(id);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
+
+        [HttpGet("{id}/getCart")]
+        public async Task<IActionResult> GetCart(int id)
+        {
+            var cart = await _userService.GetCartAsync(id);
+            if (cart == null) return NotFound();
+            return Ok(cart);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] UserDto userDto)
+        {
+            var created = await _userService.CreateAsync(userDto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UserDto userDto)
+        {
+            var updated = await _userService.UpdateAsync(userDto);
+            if (updated == null) return NotFound();
+            return Ok(updated);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _userService.DeleteAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
+        }
+    }
+}
