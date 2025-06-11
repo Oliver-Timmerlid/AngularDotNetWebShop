@@ -54,5 +54,17 @@ namespace API.Data.Services
                 .ThenInclude(cr => cr.Product)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
         }
+        public async Task<UserDto?> LoginAsync(UserLoginDto loginDto)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+
+            if (user == null) return null;
+
+            // For demo: plain text check. In production, use hashed passwords!
+            if (user.Password != loginDto.Password) return null;
+
+            return user.ToDto();
+        }
     }
 }

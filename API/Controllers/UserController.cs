@@ -62,5 +62,15 @@ namespace API.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
+        {
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
+            var user = await _userService.LoginAsync(loginDto);
+            if (user == null) return Unauthorized(new { message = "Invalid credentials" });
+
+            return Ok(user);
+        }
     }
 }

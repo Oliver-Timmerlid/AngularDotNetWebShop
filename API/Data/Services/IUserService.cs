@@ -11,5 +11,6 @@ namespace API.Data.Services
         Task<UserDto> UpdateAsync(UserDto userDto);
         Task<bool> DeleteAsync(int id);
         Task<Cart> GetCartAsync(int userId);
+        Task<UserDto?> LoginAsync(UserLoginDto loginDto);
     }
 }
