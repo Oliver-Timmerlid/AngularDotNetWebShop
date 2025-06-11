@@ -16,12 +16,12 @@ namespace API.Mappings
             };
         }
 
-        public static User ToEntity(this UserDto dto)
+        public static User ToEntity(this UserCreateDto dto)
         {
             return new User
             {
-                Id = dto.Id,
                 Email = dto.Email,
+                Password = dto.Password,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName
             };

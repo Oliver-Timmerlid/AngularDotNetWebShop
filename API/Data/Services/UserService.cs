@@ -22,9 +22,9 @@ namespace API.Data.Services
             var user = await _context.Users.FindAsync(id);
             return user?.ToDto();
         }
-        public async Task<UserDto> CreateAsync(UserDto userDto)
+        public async Task<UserDto> CreateAsync(UserCreateDto userCreateDto)
         {
-            var user = userDto.ToEntity();
+            var user = userCreateDto.ToEntity();
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user.ToDto();
@@ -33,7 +33,6 @@ namespace API.Data.Services
         {
             var existing = await _context.Users.FindAsync(userDto.Id);
             if (existing == null) return null;
-            // Only update allowed fields
             existing.Email = userDto.Email;
             existing.FirstName = userDto.FirstName;
             existing.LastName = userDto.LastName;

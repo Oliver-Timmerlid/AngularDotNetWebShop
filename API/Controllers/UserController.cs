@@ -39,10 +39,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserDto userDto)
+        public async Task<IActionResult> Register([FromBody] UserCreateDto userCreateDto)
         {
-            var created = await _userService.CreateAsync(userDto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+            var createdUser = await _userService.CreateAsync(userCreateDto);
+            return CreatedAtAction(nameof(Register), new { id = createdUser.Id }, createdUser);
         }
 
         [HttpPut]
