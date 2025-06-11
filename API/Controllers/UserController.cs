@@ -1,5 +1,6 @@
 ﻿using API.Data.Services;
 using API.Dtos;
+using API.Mappings;
 using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace API.Controllers
         {
             var cart = await _userService.GetCartAsync(id);
             if (cart == null) return NotFound();
-            return Ok(cart);
+            return Ok(cart.ToDto());
         }
 
         [HttpPost]
