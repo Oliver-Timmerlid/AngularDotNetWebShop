@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<TokenService>();
+
 
 
 builder.Services.AddCors(options =>

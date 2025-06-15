@@ -28,13 +28,12 @@ export class LoginComponent {
     const loginData: UserLogin = this.signinForm.value;
     this.userService.login(loginData).subscribe({
       next: (response) => {
-        // Handle successful login (e.g., save token, redirect)
-        console.log('Login successful', response);
-        // redirect to products page or save token
+        if (response.token) {
+          localStorage.setItem('authToken', response.token);
+        }
         this.router.navigate(['/products']);
       },
       error: (err) => {
-        // Handle error (e.g., show error message)
         console.error('Login failed', err);
       },
     });

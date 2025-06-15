@@ -12,9 +12,11 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly TokenService _tokenService;
+        public UserController(IUserService userService, TokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -70,7 +72,13 @@ namespace API.Controllers
             var user = await _userService.LoginAsync(loginDto);
             if (user == null) return Unauthorized(new { message = "Invalid credentials" });
 
-            return Ok(user);
+            var token = _tokenService.CreateToken(user);
+
+            return Ok(new
+            {
+                token,
+                user = user.ToDto()
+            });
         }
     }
 }

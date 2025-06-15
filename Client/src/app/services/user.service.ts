@@ -14,4 +14,12 @@ export class UserService {
   login(user: UserLogin): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, user);
   }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('authToken');
+  }
+
+  logout(): void {
+    localStorage.removeItem('authToken');
+  }
 }
